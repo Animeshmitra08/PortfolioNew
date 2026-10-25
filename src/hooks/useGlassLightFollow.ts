@@ -1,4 +1,4 @@
-import { useEffect, type RefObject } from 'react'
+import { useCallback, useEffect, useRef, type RefObject } from 'react'
 
 const LIGHT_ANGLE_VAR = '--ogui-glass-light-angle'
 const LIGHT_X_VAR = '--glass-light-x'
@@ -19,11 +19,17 @@ const FOLLOW_RATE = 9
  * Writes CSS variables straight onto the element — no React renders:
  * - `--ogui-glass-light-angle`: OpenGlass's light direction (0deg = top, clockwise)
  * - `--glass-light-x` / `--glass-light-y`: the lit point, for an optional sheen
+ *
+ * Returns a stable `refresh()` for elements that move on their own (e.g. an
+ * animated indicator): call it as the element moves so the light keeps aiming
+ * at a cursor that is standing still.
  */
 export function useGlassLightFollow(
   targetRef: RefObject<HTMLElement | null>,
   { enabled, instant }: { enabled: boolean; instant: boolean },
-) {
+): () => void {
+  const refreshRef = useRef<() => void>(() => {})
+
   useEffect(() => {
     const element = targetRef.current
     if (!element || !enabled) return
@@ -64,14 +70,17 @@ export function useGlassLightFollow(
       frame = requestAnimationFrame(step)
     }
 
-    const handleMove = (event: PointerEvent) => {
-      if (event.pointerType === 'touch') return
+    // Last known cursor position, in viewport coordinates.
+    let pointer: { x: number; y: number } | null = null
+
+    const aim = () => {
+      if (!pointer) return
       const rect = element.getBoundingClientRect()
       width = rect.width
       height = rect.height
       // Nearest point on the element's box (the cursor itself when inside it).
-      target.x = Math.min(Math.max(event.clientX - rect.left, 0), width)
-      target.y = Math.min(Math.max(event.clientY - rect.top, 0), height)
+      target.x = Math.min(Math.max(pointer.x - rect.left, 0), width)
+      target.y = Math.min(Math.max(pointer.y - rect.top, 0), height)
 
       if (instant) {
         current.x = target.x
@@ -82,10 +91,18 @@ export function useGlassLightFollow(
       }
     }
 
+    const handleMove = (event: PointerEvent) => {
+      if (event.pointerType === 'touch') return
+      pointer = { x: event.clientX, y: event.clientY }
+      aim()
+    }
+
     write()
     window.addEventListener('pointermove', handleMove, { passive: true })
+    refreshRef.current = aim
 
     return () => {
+      refreshRef.current = () => {}
       window.removeEventListener('pointermove', handleMove)
       if (frame !== null) cancelAnimationFrame(frame)
       element.style.removeProperty(LIGHT_ANGLE_VAR)
@@ -93,4 +110,6 @@ export function useGlassLightFollow(
       element.style.removeProperty(LIGHT_Y_VAR)
     }
   }, [targetRef, enabled, instant])
+
+  return useCallback(() => refreshRef.current(), [])
 }

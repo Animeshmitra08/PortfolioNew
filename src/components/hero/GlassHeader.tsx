@@ -134,7 +134,7 @@ function GlassBar({ links, interactive, reducedMotion }: GlassHeaderProps) {
           Nexus
         </a>
         <nav aria-label="Primary" className="relative">
-          <GlassNavLinks links={links} />
+          <GlassNavLinks links={links} interactive={interactive} />
         </nav>
       </Glass>
     </header>

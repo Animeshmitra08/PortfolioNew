@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, type CSSProperties } from 'react'
 import { Glass, type GlassLook } from 'open-glass-ui'
+import { useGlassLightFollow } from '../../hooks/useGlassLightFollow'
 import { useLocationHash } from '../../hooks/useLocationHash'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { GLASS_EDGE_STYLE } from './glassTokens'
@@ -8,8 +9,9 @@ import { createLiquidIndicator, type LiquidIndicator } from './liquidIndicator'
 /** Horizontal breathing room between a link's text and the pill's edge. */
 const PILL_PADDING_X = 14
 
-// A small, denser lens than the bar so it reads as a raised capsule. It sits
-// inside the bar, so its light angle is inherited and follows the cursor too.
+// A small, denser lens than the bar so it reads as a raised capsule. Its light
+// is aimed from its own centre (not inherited from the bar), so a pill on the
+// left lights from the right when the cursor is to its right.
 const PILL_LOOK: GlassLook = {
   blur: 0.5,
   opacity: 1.4,
@@ -35,11 +37,22 @@ const PILL_STYLE = {
 /** Resting pill height; it thins while stretching and swells as it lands. */
 const PILL_HEIGHT = 34
 
-interface GlassNavLinksProps {
-  links: string[]
+// Same idea as the bar's sheen, scaled to the capsule: a bright glint at the
+// lit point and a soft grey falloff on the far side.
+const PILL_SHEEN_STYLE: CSSProperties = {
+  background: [
+    'radial-gradient(44px 18px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(255 255 255 / 0.95), rgb(255 255 255 / 0) 70%)',
+    'radial-gradient(150px 56px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(10 10 10 / 0) 25%, rgb(10 10 10 / 0.09) 100%)',
+  ].join(', '),
 }
 
-export function GlassNavLinks({ links }: GlassNavLinksProps) {
+interface GlassNavLinksProps {
+  links: string[]
+  /** Fine pointer available — the pill's light follows the cursor. */
+  interactive: boolean
+}
+
+export function GlassNavLinks({ links, interactive }: GlassNavLinksProps) {
   const hash = useLocationHash()
   const hrefs = links.map((label) => `#${label.toLowerCase()}`)
   const activeHref = hrefs.includes(hash) ? hash : hrefs[0]
@@ -50,18 +63,24 @@ export function GlassNavLinks({ links }: GlassNavLinksProps) {
   const pillRef = useRef<HTMLElement>(null)
   const indicatorRef = useRef<LiquidIndicator | null>(null)
 
+  const refreshLight = useGlassLightFollow(pillRef, {
+    enabled: interactive,
+    instant: reducedMotion,
+  })
+
   // The spring-driven indicator writes styles directly, so its motion never
   // re-renders React. Declared before the placement effect so it exists first.
+  // Each frame it re-aims the light, so it tracks a still cursor mid-flow.
   useLayoutEffect(() => {
     const pill = pillRef.current
     if (!pill) return
-    const indicator = createLiquidIndicator(pill, PILL_HEIGHT)
+    const indicator = createLiquidIndicator(pill, PILL_HEIGHT, refreshLight)
     indicatorRef.current = indicator
     return () => {
       indicator.destroy()
       indicatorRef.current = null
     }
-  }, [])
+  }, [refreshLight])
 
   // Flow the glass pill to the active link.
   useLayoutEffect(() => {
@@ -110,7 +129,9 @@ export function GlassNavLinks({ links }: GlassNavLinksProps) {
           look={PILL_LOOK}
           style={PILL_STYLE}
           className="opacity-0 transition-opacity duration-300 motion-reduce:transition-none"
-        />
+        >
+          <span className="absolute inset-0 rounded-[inherit]" style={PILL_SHEEN_STYLE} />
+        </Glass>
       </li>
 
       {links.map((label, index) => {

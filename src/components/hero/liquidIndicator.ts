@@ -34,7 +34,15 @@ export interface LiquidIndicator {
   destroy(): void
 }
 
-export function createLiquidIndicator(element: HTMLElement, restHeight: number): LiquidIndicator {
+/**
+ * @param onFrame Called after every rendered frame (including snaps), e.g. to
+ *   re-aim lighting at a cursor while the indicator moves beneath it.
+ */
+export function createLiquidIndicator(
+  element: HTMLElement,
+  restHeight: number,
+  onFrame?: () => void,
+): LiquidIndicator {
   const left: Spring = { x: 0, velocity: 0, target: 0 }
   const right: Spring = { x: 0, velocity: 0, target: 0 }
   let leadingEdge: Spring = right
@@ -50,6 +58,7 @@ export function createLiquidIndicator(element: HTMLElement, restHeight: number):
     element.style.width = `${width.toFixed(2)}px`
     element.style.height = `${(restHeight * squash).toFixed(2)}px`
     element.style.transform = `translate3d(${left.x.toFixed(2)}px, -50%, 0)`
+    onFrame?.()
   }
 
   const integrate = (spring: Spring, config: SpringConfig, dt: number) => {
