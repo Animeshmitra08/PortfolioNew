@@ -13,6 +13,8 @@ import 'open-glass-ui/styles.css'
 import { useElementSize } from '../../hooks/useElementSize'
 import { useGlassLightFollow } from '../../hooks/useGlassLightFollow'
 import { BackdropRefractionFilter } from './BackdropRefractionFilter'
+import { GlassNavLinks } from './GlassNavLinks'
+import { GLASS_EDGE_STYLE } from './glassTokens'
 
 // Clear glass with a stronger rim, so the edge and its moving highlight read
 // against a white page.
@@ -38,15 +40,6 @@ const LENS_MATERIAL: GlassMaterial = {
   dispersion: 0.007,
   frost: 0.02,
 }
-
-const GLASS_STYLE = {
-  borderRadius: 9999,
-  // A grey hairline so the white specular arc shows where light enters, and a
-  // fainter counter-reflection so the light direction stays readable.
-  '--ogui-glass-rim-width': '1.5px',
-  '--ogui-lg-edge': 'rgb(10 10 10 / 0.2)',
-  '--ogui-lg-spec-counter': 'rgb(255 255 255 / 0.3)',
-} as CSSProperties
 
 // Lit point: a bright sheen. Away from it: a faint grey falloff, which is what
 // makes the light direction visible on a white page.
@@ -105,13 +98,13 @@ function GlassBar({ links, interactive, reducedMotion }: GlassHeaderProps) {
 
   const style: CSSProperties = refracting
     ? {
-        ...GLASS_STYLE,
+        ...GLASS_EDGE_STYLE,
         // Nearly clear: the bent backdrop carries the look, not a tint.
         background: 'rgb(255 255 255 / 0.05)',
         backdropFilter: `url(#${lens.filterId}) saturate(1.2)`,
         WebkitBackdropFilter: `url(#${lens.filterId}) saturate(1.2)`,
       }
-    : GLASS_STYLE
+    : GLASS_EDGE_STYLE
 
   return (
     <header className="px-4 pt-4 md:px-8 md:pt-6">
@@ -141,18 +134,7 @@ function GlassBar({ links, interactive, reducedMotion }: GlassHeaderProps) {
           Nexus
         </a>
         <nav aria-label="Primary" className="relative">
-          <ul className="flex items-center gap-7 text-sm text-neutral-500">
-            {links.map((label, index) => (
-              <li key={label} className={index < links.length - 1 ? 'hidden md:block' : ''}>
-                <a
-                  href={`#${label.toLowerCase()}`}
-                  className="transition-colors duration-300 hover:text-neutral-950 focus-visible:text-neutral-950"
-                >
-                  {label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <GlassNavLinks links={links} />
         </nav>
       </Glass>
     </header>
