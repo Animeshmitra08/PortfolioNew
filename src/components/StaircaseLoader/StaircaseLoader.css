@@ -1,0 +1,27 @@
+/* StaircaseLoader — cinematic neon staircase loading overlay. */
+
+.staircase-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #050607;
+  overflow: hidden;
+}
+
+.staircase-loader svg {
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+}
+
+/* Reduced-motion: skip all transitions */
+@media (prefers-reduced-motion: reduce) {
+  .staircase-loader * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

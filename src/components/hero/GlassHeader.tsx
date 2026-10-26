@@ -131,7 +131,7 @@ function GlassBar({ links, interactive, reducedMotion }: GlassHeaderProps) {
           className="relative flex items-center gap-2.5 text-[0.95rem] font-semibold tracking-[-0.01em] text-neutral-950"
         >
           <span aria-hidden className="size-3 rotate-45 border-[1.5px] border-neutral-950" />
-          Nexus
+          Animesh
         </a>
         <nav aria-label="Primary" className="relative">
           <GlassNavLinks links={links} interactive={interactive} />
