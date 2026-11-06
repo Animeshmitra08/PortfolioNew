@@ -29,7 +29,9 @@ export function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative isolate flex h-svh min-h-[36rem] w-full flex-col overflow-hidden bg-white text-left text-neutral-950"
+      // z-40: the hero is its own stacking context (isolate), so it must sit
+      // above later sections for the fixed header inside it to stay on top.
+      className="relative isolate z-40 flex h-svh min-h-[36rem] w-full flex-col overflow-hidden bg-white text-left text-neutral-950"
     >
       <Suspense fallback={null}>
         <HeroScene

@@ -1,10 +1,11 @@
-import type { ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { motion } from 'motion/react'
 import type { Project } from '../../data/projects'
+import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { cx } from '../../utils/cx'
+import { LiquidGlassBar } from '../hero/LiquidGlassBar'
 import { ArrowIcon } from '../ui/ArrowIcon'
 import { Eyebrow } from '../ui/Eyebrow'
-import { GlassSurface } from '../ui/GlassSurface'
 import { Icon } from '../ui/Icon'
 import { EASE_OUT, IN_VIEW, fadeUp, stagger } from '../ui/motion'
 import { TechTag } from '../ui/TechTag'
@@ -27,13 +28,34 @@ export function ProjectCaseStudy({ project, index, next, onClose, onNavigate }: 
   const number = String(index + 1).padStart(2, '0')
   const { detail, links } = project
 
+  const interactive = useMediaQuery('(hover: hover) and (pointer: fine)')
+  const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
+
+  // Like the header: a clear lens at the top, frosted once content (such as
+  // the dark cover image) scrolls underneath it. The dialog is the scroller.
+  const rootRef = useRef<HTMLDivElement>(null)
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const scroller = rootRef.current?.closest('dialog')
+    if (!scroller) return
+    const update = () => setScrolled(scroller.scrollTop > 24)
+    scroller.addEventListener('scroll', update, { passive: true })
+    return () => scroller.removeEventListener('scroll', update)
+  }, [])
+
   return (
-    <div className="min-h-full bg-white text-left">
-      {/* Glass bar in the header's position and material. */}
-      <div className="sticky top-0 z-20 px-4 pt-4 md:px-8 md:pt-6">
-        <GlassSurface
-          as="nav"
-          className="flex items-center justify-between gap-4 px-3 py-2 md:px-4 md:py-2.5"
+    <div ref={rootRef} className="min-h-full bg-white text-left">
+      {/* The header's liquid-glass bar, in the header's position. */}
+      <nav
+        aria-label="Case study"
+        className="pointer-events-none sticky top-0 z-20 px-4 pt-4 md:px-8 md:pt-6"
+      >
+        <LiquidGlassBar
+          lensId="case-study-glass"
+          interactive={interactive}
+          reducedMotion={reducedMotion}
+          frosted={scrolled}
+          className="pointer-events-auto flex items-center justify-between gap-4 px-3 py-2 md:px-4 md:py-2.5"
         >
           <button
             type="button"
@@ -62,8 +84,8 @@ export function ProjectCaseStudy({ project, index, next, onClose, onNavigate }: 
           >
             <Icon name="close" className="size-4" />
           </button>
-        </GlassSurface>
-      </div>
+        </LiquidGlassBar>
+      </nav>
 
       <motion.article
         aria-labelledby={CASE_STUDY_TITLE_ID}
