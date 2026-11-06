@@ -30,6 +30,13 @@
   }
 }
 
+/* In-page navigation glides, unless reduced motion is requested. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 #root {
   min-height: 100svh;
   display: flex;
