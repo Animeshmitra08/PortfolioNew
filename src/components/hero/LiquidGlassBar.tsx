@@ -107,7 +107,8 @@ export function LiquidGlassBar({
 
   const frost: CSSProperties = {
     transition: 'background-color 400ms ease',
-    ...(frosted && { backgroundColor: 'rgb(255 255 255 / 0.62)' }),
+    // Strong enough that the grey secondary links stay readable over black.
+    ...(frosted && { backgroundColor: 'rgb(255 255 255 / 0.8)' }),
   }
 
   const style: CSSProperties = refracting
