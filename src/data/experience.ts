@@ -12,7 +12,7 @@ export interface ExperienceEntry {
 
 export const EXPERIENCE_SECTION = {
   label: 'Experience',
-  title: 'Building,\nLearning,\nImproving.',
+  title: 'Building,\nlearning,\nimproving.',
 }
 
 export const EXPERIENCE: ExperienceEntry[] = [
@@ -23,11 +23,11 @@ export const EXPERIENCE: ExperienceEntry[] = [
     start: 'Start date',
     end: 'Present',
     responsibilities: [
-      'Developed cross-platform mobile applications using React Native and Expo.',
+      'Developed Android and iOS apps from one React Native and Expo codebase.',
       'Integrated REST APIs and implemented dynamic application workflows.',
-      'Built enterprise mobile solutions for operational business processes.',
-      'Implemented real-time vehicle tracking and location-based functionality.',
-      'Worked with configurable web-based business workflows to deliver dynamic mobile experiences.',
+      'Built enterprise mobile apps for operational business processes.',
+      'Implemented live vehicle tracking and location features.',
+      'Turned business workflows configured on the web into dynamic mobile screens.',
       'Managed application builds, releases, and deployment for Android and iOS.',
     ],
     stack: ['React Native', 'Expo', 'TypeScript', 'REST APIs', 'Axios', 'Firebase'],

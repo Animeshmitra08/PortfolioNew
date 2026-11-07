@@ -15,7 +15,7 @@ export function Reveal({ delay = 0, y = 28, ...props }: RevealProps) {
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={IN_VIEW}
-      transition={{ duration: 0.9, ease: EASE_OUT, delay }}
+      transition={{ duration: 0.7, ease: EASE_OUT, delay }}
       {...props}
     />
   )

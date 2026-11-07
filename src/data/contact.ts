@@ -1,6 +1,5 @@
 export const CONTACT_SECTION = {
   label: 'Contact',
-  title: "Have an Interesting Idea?\nLet's Build Something.",
-  intro:
-    "I'm always interested in meaningful projects, innovative ideas, and opportunities to create something useful.",
+  title: "Have an idea?\nLet's build it.",
+  intro: "Tell me about the app, game or tool you have in mind, or about a role you're hiring for.",
 }

@@ -1,13 +1,13 @@
 import { useLayoutEffect, useRef, type CSSProperties } from 'react'
 import { Glass, type GlassLook } from 'open-glass-ui'
+import type { NavLink } from '../../data/navigation'
 import { useGlassLightFollow } from '../../hooks/useGlassLightFollow'
-import { useLocationHash } from '../../hooks/useLocationHash'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { GLASS_EDGE_STYLE } from './glassTokens'
 import { createLiquidIndicator, type LiquidIndicator } from './liquidIndicator'
 
 /** Horizontal breathing room between a link's text and the pill's edge. */
-const PILL_PADDING_X = 14
+const PILL_PADDING_X = 16
 
 // A small, denser lens than the bar so it reads as a raised capsule. Its light
 // is aimed from its own centre (not inherited from the bar), so a pill on the
@@ -35,7 +35,7 @@ const PILL_STYLE = {
 } as CSSProperties
 
 /** Resting pill height; it thins while stretching and swells as it lands. */
-const PILL_HEIGHT = 34
+const PILL_HEIGHT = 32
 
 // Same idea as the bar's sheen, scaled to the capsule: a bright glint at the
 // lit point and a soft grey falloff on the far side.
@@ -47,21 +47,22 @@ const PILL_SHEEN_STYLE: CSSProperties = {
 }
 
 interface GlassNavLinksProps {
-  links: string[]
+  links: NavLink[]
+  /** Link of the section currently in view, or null (the pill then hides). */
+  activeHref: string | null
   /** Fine pointer available — the pill's light follows the cursor. */
   interactive: boolean
 }
 
-export function GlassNavLinks({ links, interactive }: GlassNavLinksProps) {
-  const hash = useLocationHash()
-  const hrefs = links.map((label) => `#${label.toLowerCase()}`)
-  const activeHref = hrefs.includes(hash) ? hash : hrefs[0]
-
+export function GlassNavLinks({ links, activeHref, interactive }: GlassNavLinksProps) {
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
   const listRef = useRef<HTMLUListElement>(null)
   const pillRef = useRef<HTMLElement>(null)
   const indicatorRef = useRef<LiquidIndicator | null>(null)
+  // Whether the pill is currently showing; a hidden pill reappears in place
+  // instead of flowing in from wherever it was last.
+  const shownRef = useRef(false)
 
   const refreshLight = useGlassLightFollow(pillRef, {
     enabled: interactive,
@@ -89,18 +90,20 @@ export function GlassNavLinks({ links, interactive }: GlassNavLinksProps) {
     if (!list || !pill) return
 
     const place = (instant: boolean) => {
-      const link = list.querySelector<HTMLElement>(`a[href="${activeHref}"]`)
-      // Hidden links (e.g. collapsed on mobile) have no box to sit under.
+      const link = activeHref ? list.querySelector<HTMLElement>(`a[href="${activeHref}"]`) : null
+      // No section in view, or a hidden link (e.g. collapsed on mobile): no pill.
       if (!link || link.offsetWidth === 0) {
         pill.style.opacity = '0'
+        shownRef.current = false
         return
       }
       const listBox = list.getBoundingClientRect()
       const linkBox = link.getBoundingClientRect()
       const x = linkBox.left - listBox.left - PILL_PADDING_X
       const width = linkBox.width + PILL_PADDING_X * 2
-      indicatorRef.current?.moveTo(x, width, { instant })
+      indicatorRef.current?.moveTo(x, width, { instant: instant || !shownRef.current })
       pill.style.opacity = '1'
+      shownRef.current = true
     }
 
     place(reducedMotion)
@@ -119,7 +122,7 @@ export function GlassNavLinks({ links, interactive }: GlassNavLinksProps) {
   }, [activeHref, reducedMotion])
 
   return (
-    <ul ref={listRef} className="relative flex items-center gap-7 text-sm text-neutral-500">
+    <ul ref={listRef} className="relative flex items-center gap-8 text-sm text-neutral-500">
       {/* Decorative indicator; hidden from assistive tech (aria-current carries the state). */}
       <li aria-hidden className="pointer-events-none absolute inset-0">
         <Glass
@@ -134,11 +137,10 @@ export function GlassNavLinks({ links, interactive }: GlassNavLinksProps) {
         </Glass>
       </li>
 
-      {links.map((label, index) => {
-        const href = hrefs[index]
+      {links.map(({ label, href }, index) => {
         const active = href === activeHref
         return (
-          <li key={label} className={`relative ${index < links.length - 1 ? 'hidden md:block' : ''}`}>
+          <li key={href} className={`relative ${index < links.length - 1 ? 'hidden md:block' : ''}`}>
             <a
               href={href}
               aria-current={active ? 'location' : undefined}

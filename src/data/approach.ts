@@ -8,7 +8,7 @@ export interface ApproachStage {
 
 export const APPROACH_SECTION = {
   label: 'My approach',
-  title: 'From Concept to Creation.',
+  title: 'From concept to creation.',
 }
 
 export const APPROACH_STAGES: ApproachStage[] = [

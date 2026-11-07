@@ -63,7 +63,7 @@ export function Approach() {
               <span
                 aria-hidden
                 className={cx(
-                  'absolute top-0 left-0 flex size-[23px] items-center justify-center rounded-full border bg-white transition-colors duration-500',
+                  'absolute top-0 left-0 flex size-[23px] items-center justify-center rounded-full border bg-white transition-colors duration-300',
                   lit ? 'border-neutral-950' : 'border-neutral-300',
                 )}
               >
@@ -79,7 +79,7 @@ export function Approach() {
               <span
                 aria-hidden
                 className={cx(
-                  'block text-[clamp(3rem,6vw,5.5rem)] leading-none font-semibold tracking-[-0.05em] transition-colors duration-700',
+                  'block text-5xl font-semibold tracking-[-0.05em] transition-colors duration-300 lg:text-7xl',
                   lit ? 'text-neutral-950' : 'text-neutral-200',
                 )}
               >
@@ -89,7 +89,7 @@ export function Approach() {
               <div className="mt-6 flex items-center gap-3">
                 <span
                   className={cx(
-                    'flex size-9 items-center justify-center rounded-full border transition-colors duration-500',
+                    'flex size-9 items-center justify-center rounded-full border transition-colors duration-300',
                     focused
                       ? 'border-neutral-950 bg-neutral-950 text-white'
                       : 'border-neutral-200 text-neutral-500',
@@ -104,7 +104,7 @@ export function Approach() {
               </div>
               <p
                 className={cx(
-                  'mt-3 max-w-[30ch] text-sm leading-relaxed transition-colors duration-500 md:text-[0.95rem]',
+                  'mt-3 max-w-[30ch] text-sm leading-relaxed transition-colors duration-300 md:text-base',
                   focused ? 'text-neutral-950' : 'text-neutral-500',
                 )}
               >

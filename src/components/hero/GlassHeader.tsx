@@ -1,11 +1,15 @@
 import { GlassProvider, GlassThemeProvider } from 'open-glass-ui'
 import 'open-glass-ui/styles.css'
+import { PRIMARY_NAV, SECTION_IDS } from '../../data/navigation'
+import { PROFILE } from '../../data/profile'
+import { useActiveSection } from '../../hooks/useActiveSection'
 import { useScrolledPast } from '../../hooks/useScrolledPast'
+import { CONTAINER } from '../ui/typography'
 import { GlassNavLinks } from './GlassNavLinks'
 import { LiquidGlassBar } from './LiquidGlassBar'
+import { MobileMenu } from './MobileMenu'
 
 interface GlassHeaderProps {
-  links: string[]
   /** Fine pointer available — the light follows the cursor. */
   interactive: boolean
   reducedMotion: boolean
@@ -21,10 +25,12 @@ export function GlassHeader(props: GlassHeaderProps) {
   )
 }
 
-function GlassBar({ links, interactive, reducedMotion }: GlassHeaderProps) {
+function GlassBar({ interactive, reducedMotion }: GlassHeaderProps) {
   // Over the white hero the lens stays clear. Past it, the bar floats over
   // any content (including dark imagery), so it frosts to keep text legible.
   const pastHero = useScrolledPast(0.75)
+  const activeId = useActiveSection(SECTION_IDS)
+  const activeHref = activeId ? `#${activeId}` : null
 
   return (
     // Pinned to the viewport so the bar stays available on every section. The
@@ -35,18 +41,21 @@ function GlassBar({ links, interactive, reducedMotion }: GlassHeaderProps) {
         interactive={interactive}
         reducedMotion={reducedMotion}
         frosted={pastHero}
-        className="pointer-events-auto flex items-center justify-between px-5 py-3 md:px-7 md:py-3.5"
+        className={`pointer-events-auto flex items-center justify-between px-6 py-3 md:px-8 md:py-4 ${CONTAINER}`}
       >
         <a
           href="#"
-          className="relative flex items-center gap-2.5 text-[0.95rem] font-semibold tracking-[-0.01em] text-neutral-950"
+          className="relative flex items-center gap-3 text-base font-semibold tracking-[-0.01em] text-neutral-950"
         >
           <span aria-hidden className="size-3 rotate-45 border-[1.5px] border-neutral-950" />
-          Animesh
+          {PROFILE.name}
         </a>
-        <nav aria-label="Primary" className="relative">
-          <GlassNavLinks links={links} interactive={interactive} />
-        </nav>
+        <div className="relative flex items-center gap-6">
+          <nav aria-label="Primary">
+            <GlassNavLinks links={PRIMARY_NAV} activeHref={activeHref} interactive={interactive} />
+          </nav>
+          <MobileMenu activeHref={activeHref} reducedMotion={reducedMotion} />
+        </div>
       </LiquidGlassBar>
     </header>
   )

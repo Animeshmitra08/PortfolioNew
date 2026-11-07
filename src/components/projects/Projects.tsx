@@ -25,7 +25,7 @@ export function Projects() {
 
       <div
         aria-live="polite"
-        className="mt-12 flex min-h-9 flex-wrap items-center gap-3 border-t border-neutral-200 pt-5 text-sm text-neutral-500 md:mt-16"
+        className="mt-12 flex min-h-9 flex-wrap items-center gap-3 border-t border-neutral-200 pt-6 text-sm text-neutral-500 md:mt-16"
       >
         <AnimatePresence mode="wait" initial={false}>
           {activeTech ? (
@@ -44,7 +44,7 @@ export function Projects() {
               <button
                 type="button"
                 onClick={() => setActiveTech(null)}
-                className="cursor-pointer text-neutral-950 underline decoration-neutral-300 underline-offset-4 transition-colors hover:decoration-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-950"
+                className="cursor-pointer text-neutral-950 underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 hover:decoration-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-950"
               >
                 Show all
               </button>
@@ -64,7 +64,7 @@ export function Projects() {
         </AnimatePresence>
       </div>
 
-      <div className="mt-12 grid gap-x-8 gap-y-24 md:mt-16 md:grid-cols-12 md:gap-y-36">
+      <div className="mt-12 grid gap-x-8 gap-y-24 md:mt-16 md:grid-cols-12">
         {PROJECTS.map((project, index) => (
           <ProjectFeature
             key={project.slug}

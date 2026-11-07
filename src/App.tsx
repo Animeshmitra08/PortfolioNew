@@ -9,17 +9,23 @@ import { ProjectDetail } from './components/projects/ProjectDetail'
 import { Projects } from './components/projects/Projects'
 import { TechStack } from './components/stack/TechStack'
 import { GlassScope } from './components/ui/GlassScope'
-import './App.css'
 
 function App() {
   return (
     <>
+      {/* First stop for keyboard users: jumps past the hero and header. */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-neutral-950 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+      >
+        Skip to content
+      </a>
       {/* The hero lazy-loads its own three.js scene, so its copy paints immediately. */}
       <Hero />
       {/* "user": transform animations are skipped when reduced motion is requested. */}
       <MotionConfig reducedMotion="user">
         <GlassScope>
-          <main>
+          <main id="main" tabIndex={-1} className="focus:outline-none">
             <About />
             <Projects />
             <TechStack />

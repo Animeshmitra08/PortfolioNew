@@ -3,7 +3,7 @@ import { cx } from '../../utils/cx'
 import { Eyebrow } from './Eyebrow'
 import { Reveal } from './Reveal'
 import { RevealText } from './RevealText'
-import { BODY, HEADING } from './typography'
+import { BODY, CONTAINER, HEADING } from './typography'
 
 interface SectionProps {
   id: string
@@ -12,18 +12,18 @@ interface SectionProps {
   children: ReactNode
 }
 
-/** Full-bleed section on the hero's gutters, separated by a hairline. */
+/**
+ * Section on the hero's gutters, separated by a full-width hairline, with its
+ * content held to the shared centred column.
+ */
 export function Section({ id, labelledBy, className, children }: SectionProps) {
   return (
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={cx(
-        'relative border-t border-neutral-200 px-6 py-24 text-left md:px-10 md:py-36',
-        className,
-      )}
+      className={cx('relative border-t border-neutral-200 px-6 py-20 text-left md:px-10 md:py-24', className)}
     >
-      {children}
+      <div className={CONTAINER}>{children}</div>
     </section>
   )
 }

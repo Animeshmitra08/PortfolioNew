@@ -6,7 +6,7 @@ const TAGS = { h2: motion.h2, h3: motion.h3, p: motion.p } as const
 
 const WORD: Variants = {
   hidden: { y: '110%' },
-  visible: { y: '0%', transition: { duration: 1, ease: EASE_OUT } },
+  visible: { y: '0%', transition: { duration: 0.8, ease: EASE_OUT } },
 }
 
 interface RevealTextProps {

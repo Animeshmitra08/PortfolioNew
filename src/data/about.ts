@@ -10,32 +10,32 @@ export interface Highlight {
 
 export const ABOUT = {
   label: 'About me',
-  headline: 'Engineering Ideas Into Real-World Products.',
+  headline: 'Turning ideas into products people use.',
   intro: [
-    "I'm a software developer passionate about building practical digital products, mobile applications, and interactive experiences. I enjoy working across frontend development, mobile engineering, API integration, and 3D technologies.",
-    'My approach combines clean architecture, thoughtful UI design, and performance-focused development to create applications that solve real problems.',
+    "I'm a software developer who builds mobile apps, interactive 3D and the integrations that connect them to real systems. Most of my work is in React Native, Expo and TypeScript, with Three.js and React Three Fiber for 3D.",
+    'I care about clean architecture, considered interfaces and smooth performance on real phones, not just on a fast development machine.',
   ],
   highlights: [
     {
-      title: 'Mobile Application Development',
+      title: 'Mobile app development',
       tag: 'Mobile',
-      body: 'Cross-platform apps for Android and iOS with React Native and Expo.',
+      body: 'Apps for Android and iOS from one React Native and Expo codebase.',
       icon: 'phone',
     },
     {
-      title: 'Interactive 3D Experiences',
+      title: 'Interactive 3D experiences',
       tag: '3D',
-      body: 'Real-time scenes and games built with Three.js and React Three Fiber.',
+      body: 'Live 3D scenes and games built with Three.js and React Three Fiber.',
       icon: 'cube',
     },
     {
-      title: 'Full-Stack Integration',
-      tag: 'Full-stack',
+      title: 'APIs and integration',
+      tag: 'APIs',
       body: 'REST APIs, Firebase and Supabase wired into dependable app workflows.',
       icon: 'layers',
     },
     {
-      title: 'Product Engineering',
+      title: 'Product engineering',
       tag: 'Product',
       body: 'Clean architecture and considered UI, shaped around real problems.',
       icon: 'target',

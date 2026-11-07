@@ -76,8 +76,8 @@ export function ContactForm() {
   }
 
   return (
-    <form noValidate onSubmit={handleSubmit} aria-describedby="contact-status" className="relative grid gap-9">
-      <div className="grid gap-9 sm:grid-cols-2 sm:gap-8">
+    <form noValidate onSubmit={handleSubmit} aria-describedby="contact-status" className="relative grid gap-10">
+      <div className="grid gap-10 sm:grid-cols-2 sm:gap-8">
         <TextField
           field="name"
           label="Name"
@@ -130,18 +130,18 @@ export function ContactForm() {
         </label>
       </div>
 
-      <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
+      <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-8">
         <button
           type="submit"
           disabled={submitting}
-          className="group inline-flex cursor-pointer items-center gap-4 rounded-full bg-neutral-950 py-2.5 pr-2.5 pl-6 text-sm font-medium text-white transition-[box-shadow,opacity,scale] duration-300 hover:shadow-[var(--shadow)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-950 active:scale-[0.98] disabled:cursor-wait disabled:opacity-70"
+          className="group inline-flex cursor-pointer items-center gap-4 rounded-full bg-neutral-950 py-2 pr-2 pl-6 text-base font-semibold text-white transition-[box-shadow,opacity,scale] duration-300 hover:shadow-[var(--shadow)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-950 active:scale-[0.98] disabled:cursor-wait disabled:opacity-70"
         >
-          {submitting ? 'Sending…' : 'Send Message'}
+          {submitting ? 'Sending…' : 'Send message'}
           <span className="flex size-9 items-center justify-center rounded-full bg-white text-neutral-950">
             {submitting ? (
               <span aria-hidden className="size-3.5 animate-spin rounded-full border-[1.5px] border-neutral-950 border-t-transparent" />
             ) : (
-              <ArrowIcon direction="right" className="text-[0.8rem]" />
+              <ArrowIcon direction="right" className="text-xs" />
             )}
           </span>
         </button>
@@ -237,7 +237,7 @@ function TextField({
         <label htmlFor={id} className={cx('text-neutral-500', LABEL)}>
           {label}
         </label>
-        {counter && <span aria-hidden className="font-mono text-[0.65rem] text-neutral-400">{counter}</span>}
+        {counter && <span aria-hidden className="font-mono text-xs text-neutral-400">{counter}</span>}
       </div>
       <div className="relative mt-1">
         {multiline ? (
@@ -248,11 +248,11 @@ function TextField({
         {/* Focus line draws across from the left. */}
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-neutral-950 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] peer-focus:scale-x-100 motion-reduce:transition-none"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-neutral-950 transition-transform duration-500 peer-focus:scale-x-100 motion-reduce:transition-none"
         />
       </div>
       {error && (
-        <p id={errorId} className="mt-2 flex items-center gap-1.5 text-xs text-neutral-950">
+        <p id={errorId} className="mt-2 flex items-center gap-2 text-xs text-neutral-950">
           <Icon name="alert" className="size-3.5 shrink-0" />
           {error}
         </p>

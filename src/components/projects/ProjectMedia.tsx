@@ -75,13 +75,13 @@ export function ProjectMedia({ project, href, className }: ProjectMediaProps) {
       className={cx('group/media relative block overflow-hidden bg-neutral-100', className)}
     >
       <motion.div className="absolute inset-x-0 -top-[5%] -bottom-[5%]" style={{ y: parallax }}>
-        <div className="size-full transition-transform duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/media:scale-[1.045] motion-reduce:transition-none">
+        <div className="size-full transition-transform duration-500 group-hover/media:scale-[1.045] motion-reduce:transition-none">
           <ProjectCover project={project} />
         </div>
       </motion.div>
 
-      {/* Soft shade from the bottom on hover. */}
-      <span className="pointer-events-none absolute inset-0 bg-linear-to-t from-neutral-950/25 via-neutral-950/0 to-neutral-950/0 opacity-0 transition-opacity duration-700 group-hover/media:opacity-100" />
+      {/* Flat, soft shade on hover. */}
+      <span className="pointer-events-none absolute inset-0 bg-neutral-950/10 opacity-0 transition-opacity duration-300 group-hover/media:opacity-100" />
 
       {canHover ? (
         <motion.span
@@ -97,25 +97,25 @@ export function ProjectMedia({ project, href, className }: ProjectMediaProps) {
             <GlassSurface
               as="span"
               followLight={false}
-              className="flex size-24 items-center justify-center gap-1.5 text-[0.8rem] font-medium text-neutral-950"
+              className="flex size-24 items-center justify-center gap-2 text-sm font-medium text-neutral-950"
               style={{ background: 'rgb(255 255 255 / 0.55)' }}
             >
               <span className="relative">View</span>
-              <ArrowIcon direction="up-right" className="relative text-[0.7rem]" />
+              <ArrowIcon direction="up-right" className="relative text-xs" />
             </GlassSurface>
           </motion.span>
         </motion.span>
       ) : (
         <span
           className={cx(
-            'absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium backdrop-blur-md',
+            'absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-medium backdrop-blur-md',
             dark
               ? 'border-white/25 bg-white/10 text-white'
               : 'border-neutral-950/10 bg-white/70 text-neutral-950',
           )}
         >
           Case study
-          <ArrowIcon direction="up-right" className="text-[0.65rem]" />
+          <ArrowIcon direction="up-right" className="text-xs" />
         </span>
       )}
     </a>

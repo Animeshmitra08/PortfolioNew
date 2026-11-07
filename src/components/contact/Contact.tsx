@@ -26,7 +26,7 @@ export function Contact() {
           <RevealText
             id="contact-title"
             text={CONTACT_SECTION.title}
-            className={cx(HEADING_BASE, 'text-[clamp(2.1rem,4.6vw,4.25rem)]')}
+            className={cx(HEADING_BASE, 'text-4xl md:text-5xl lg:text-6xl')}
           />
           <Reveal delay={0.2}>
             <p className={cx(BODY, 'mt-8 max-w-md')}>{CONTACT_SECTION.intro}</p>
@@ -45,11 +45,11 @@ export function Contact() {
                 <a
                   href={channel.href}
                   {...(channel.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  className="group flex items-center justify-between gap-6 py-5 focus-visible:outline-none"
+                  className="group flex items-center justify-between gap-6 py-6 focus-visible:outline-none"
                 >
                   <span className="min-w-0">
                     <span className={cx('block text-neutral-400', LABEL)}>{channel.label}</span>
-                    <span className="mt-1.5 block truncate text-base font-medium text-neutral-950 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1.5 group-focus-visible:underline group-focus-visible:underline-offset-4 motion-reduce:transition-none md:text-lg">
+                    <span className="mt-2 block truncate text-base font-medium text-neutral-950 transition-transform duration-500 group-hover:translate-x-2 group-focus-visible:underline group-focus-visible:underline-offset-4 motion-reduce:transition-none md:text-lg">
                       {channel.display}
                     </span>
                     {channel.external && <span className="sr-only"> (opens in a new tab)</span>}
@@ -67,7 +67,7 @@ export function Contact() {
               </motion.li>
             ))}
           </motion.ul>
-          <Reveal delay={0.3} className="mt-5">
+          <Reveal delay={0.3} className="mt-6">
             <CopyEmailButton />
           </Reveal>
         </div>

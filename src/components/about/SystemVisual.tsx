@@ -13,7 +13,7 @@ const RING_RADIUS = 2.3
 const CAMERA_DISTANCE = 7
 const SQRT3 = Math.sqrt(3)
 const ALPHA_BUCKETS = 6
-const LABEL_FONT = '500 10px ui-monospace, Consolas, monospace'
+const LABEL_FONT = '500 10px "Geist Mono Variable", ui-monospace, monospace'
 
 type Vec3 = [number, number, number]
 
@@ -438,14 +438,14 @@ export function SystemVisual({ activeIndex, labels }: SystemVisualProps) {
       ))}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 flex justify-between p-4 font-mono text-[0.62rem] tracking-[0.14em] text-neutral-400 uppercase"
+        className="pointer-events-none absolute inset-x-0 top-0 flex justify-between p-4 font-mono text-xs tracking-[0.14em] text-neutral-400 uppercase"
       >
         <span>Fig. 01</span>
         <span>Areas of focus</span>
       </div>
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-between p-4 font-mono text-[0.62rem] tracking-[0.14em] text-neutral-400 uppercase"
+        className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-between p-4 font-mono text-xs tracking-[0.14em] text-neutral-400 uppercase"
       >
         <span>Vertex / up</span>
         <span ref={readoutRef}>Rot 034.4°</span>

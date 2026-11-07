@@ -1,18 +1,23 @@
 import type { ArtworkKind } from '../components/projects/artwork/types'
+import carRacingBanner from '../assets/projects/car-racing.webp'
+import questClashBanner from '../assets/projects/questclash.webp'
 
 /**
  * Every project shown in "Selected work" and its case-study view.
  *
  * - Order here is the order on the page; layouts cycle wide → large → tall → split.
  * - To use real screenshots, add `cover` (replaces the illustration everywhere)
- *   and `gallery` images. Put files in `public/projects/` and reference them as
- *   `/projects/name.jpg`.
+ *   and `gallery` images (shown uncropped in the case study). Import WebP files
+ *   from `src/assets/projects/` so they are fingerprinted and cached.
  */
 
 export interface ProjectImage {
   src: string
   alt: string
   caption?: string
+  /** Intrinsic size, so the browser reserves space before the image loads. */
+  width?: number
+  height?: number
 }
 
 export interface ProjectNote {
@@ -56,9 +61,8 @@ export interface Project {
 
 export const PROJECTS_SECTION = {
   label: 'Selected work',
-  title: "Things I've Built.",
-  intro:
-    'A collection of applications, experiments, and products developed through engineering and creativity.',
+  title: "Things I've built.",
+  intro: 'Two 3D games, a VS Code extension and the enterprise apps I build at work.',
 }
 
 export const PROJECTS: Project[] = [
@@ -73,20 +77,28 @@ export const PROJECTS: Project[] = [
       github: 'https://github.com/Animeshmitra08/AonCarRacing',
     },
     artwork: 'racing',
-    gallery: [],
+    gallery: [
+      {
+        src: carRacingBanner,
+        alt: 'Car Racing promotional banner: a red supercar on a night circuit, the garage with paint, trim, rim and brake caliper options, the track picker and local Wi-Fi multiplayer.',
+        caption: 'Garage, track select and local multiplayer.',
+        width: 1024,
+        height: 500,
+      },
+    ],
     detail: {
       overview:
         'An arcade racing game for mobile that brings a fully 3D racing experience to React Native. Players pick and customize a supercar, choose a track, and race against the clock or against friends on the same Wi-Fi network.',
       problem:
-        'Fast, good-looking 3D games are usually built with dedicated game engines. The goal was to see how far a React Native and Expo stack could go: responsive 3D racing, game physics and local multiplayer, all from a single TypeScript codebase.',
+        'Fast, polished 3D games are usually built with dedicated game engines. The goal was to see how far a React Native and Expo stack could go: responsive 3D racing, game physics and local multiplayer, all from a single TypeScript codebase.',
       solution:
-        'The game renders its 3D world with React Three Fiber inside an Expo app, uses Matter.js for movement and collisions, and connects nearby devices over the local network for head-to-head races. Cars, tracks and game modes are composed from reusable pieces, so new content can be added without reworking the core loop.',
+        'The game renders its 3D world with React Three Fiber inside an Expo app, uses Matter.js for movement and collisions, and connects nearby devices over the local network so friends can race each other. Cars, tracks and game modes are composed from reusable pieces, so new content can be added without reworking the core loop.',
       features: [
-        'Customizable supercars',
-        'Multiple race tracks',
-        'Time-trial mode',
+        'A garage for paint, trim, rims and brake calipers',
+        'Four tracks, from Green Valley to Alpine Pass',
+        'Time trials with a best lap saved per track',
         'Local multiplayer over Wi-Fi',
-        'Arcade-style 3D driving',
+        'Arcade 3D driving tuned for touch controls',
         'One codebase with React Native and Expo',
       ],
       implementation: [
@@ -128,7 +140,7 @@ export const PROJECTS: Project[] = [
     name: 'QuestClash: Puzzle Adventure',
     category: 'Game Development / Interactive Experience',
     summary:
-      'A multiplayer puzzle-adventure experience featuring interactive environments, challenging puzzles, hidden clues, traps, and cooperative gameplay.',
+      'A cooperative 3D puzzle adventure for up to 5 players: explore temple ruins, find hidden clues, dodge traps and solve puzzles together.',
     stack: ['React Native', 'Expo', 'TypeScript', 'React Three Fiber'],
     links: {
       github: 'https://github.com/Animeshmitra08/QuestClash',
@@ -137,21 +149,29 @@ export const PROJECTS: Project[] = [
       ],
     },
     artwork: 'quest',
-    gallery: [],
+    gallery: [
+      {
+        src: questClashBanner,
+        alt: 'QuestClash promotional banner: an explorer before a glowing temple gate, two level screenshots with objectives, and the online lobby for creating or joining a room.',
+        caption: 'Levels, objectives and the online lobby.',
+        width: 1024,
+        height: 500,
+      },
+    ],
     detail: {
       overview:
-        'QuestClash is a multiplayer puzzle-adventure where players explore interactive environments together, uncover hidden clues, avoid traps and cooperate to solve challenging puzzles.',
+        'QuestClash is a multiplayer puzzle adventure where players explore interactive environments together, uncover hidden clues, avoid traps and cooperate to solve challenging puzzles.',
       problem:
-        'Most mobile puzzle games are single-player and screen-based. QuestClash set out to create a shared, explorable 3D space where solving a puzzle depends on players communicating and working together.',
+        'Most mobile puzzle games are solo and flat. QuestClash set out to create a shared, explorable 3D space where solving a puzzle depends on players communicating and working together.',
       solution:
         'Environments are built as interactive 3D scenes with React Three Fiber. Puzzle elements, clues and traps react to player actions, and shared game state keeps every player’s view of the world consistent during cooperative play.',
       features: [
-        'Multiplayer, cooperative gameplay',
-        'Interactive 3D environments',
-        'Challenging puzzles',
-        'Hidden clues to discover',
-        'Traps and hazards',
-        'Atmospheric, cinematic visuals',
+        'Play solo, or online with up to 5 players',
+        'Host a room and share its code with friends',
+        'Two levels: Forgotten Temple and Moonlit Cloister',
+        'Keys, clues and mechanisms to uncover',
+        'Traps that reward timing',
+        'Stars scored on time, trap hits and answers',
       ],
       implementation: [
         {
@@ -188,7 +208,7 @@ export const PROJECTS: Project[] = [
     name: 'RN Developer Toolkit',
     category: 'Developer Tools / Open Source',
     summary:
-      'A Visual Studio Code extension designed to improve React Native development workflows through project analysis, Expo commands, and automated component and screen generation.',
+      'A VS Code extension for React Native: it analyses your project, runs Expo commands from the editor and generates components and screens.',
     stack: ['TypeScript', 'VS Code API', 'Node.js', 'npm'],
     links: {
       github: 'https://github.com/Animeshmitra08/RNDeveloperToolkit',
@@ -249,7 +269,7 @@ export const PROJECTS: Project[] = [
     name: 'Enterprise Mobile Applications',
     category: 'Enterprise Software / Mobile Development',
     summary:
-      'Business-focused mobile applications with dynamic workflows, REST API integrations, real-time vehicle tracking, and configurable enterprise processes.',
+      'Mobile apps for operations teams, with workflows configured on the web, REST API integrations and live vehicle tracking.',
     stack: ['React Native', 'Expo', 'TypeScript', 'Axios', 'Firebase', 'REST APIs'],
     // Client work: no public repository.
     links: {},
@@ -257,22 +277,22 @@ export const PROJECTS: Project[] = [
     gallery: [],
     detail: {
       overview:
-        'Business-focused mobile applications for operational teams, combining dynamic workflows, REST API integrations, real-time vehicle tracking and configurable enterprise processes.',
+        'Mobile applications for operations teams, combining workflows configured on the web, REST API integrations, live vehicle tracking and processes each team can adapt.',
       problem:
-        'Operational processes change often and differ between teams. Hard-coding each workflow into a mobile app makes every change slow and expensive to ship.',
+        'Operational processes change often and differ between teams. Building each workflow into the app by hand makes every change slow and expensive to ship.',
       solution:
-        'The apps render workflows dynamically from configuration managed on the web, integrate with existing back-end systems through REST APIs, and add real-time vehicle tracking for field operations.',
+        'The apps render workflows dynamically from configuration managed on the web, integrate with existing back end systems through REST APIs, and add live vehicle tracking for field operations.',
       features: [
-        'Dynamic, configurable workflows',
+        'Workflows that change without an app release',
         'REST API integrations',
-        'Real-time vehicle tracking',
-        'Location-based functionality',
+        'Live vehicle tracking',
+        'Location features for field teams',
         'Firebase integration',
         'Android and iOS releases',
       ],
       implementation: [
         {
-          title: 'Configuration-driven UI',
+          title: 'UI built from configuration',
           body: 'Screens and steps are generated from workflow definitions configured on the web, so processes can change without rebuilding the app.',
         },
         {
@@ -281,7 +301,7 @@ export const PROJECTS: Project[] = [
         },
         {
           title: 'Tracking',
-          body: 'Location services provide real-time vehicle positions for tracking and location-based features.',
+          body: 'Location services provide live vehicle positions for tracking and other location features.',
         },
         {
           title: 'Delivery',
@@ -294,7 +314,7 @@ export const PROJECTS: Project[] = [
           body: 'Supporting configurable processes while keeping every workflow predictable.',
         },
         {
-          title: 'Real-time location',
+          title: 'Live location',
           body: 'Balancing tracking update frequency with battery life and data usage.',
         },
         {

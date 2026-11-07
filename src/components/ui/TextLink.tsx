@@ -8,7 +8,7 @@ interface TextLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   arrow?: ArrowDirection
 }
 
-/** The hero's "Start a project" link style: underlined label with a sliding arrow. */
+/** The hero's call-to-action link style: underlined label with a sliding arrow. */
 export function TextLink({ external = false, arrow, className, children, ...rest }: TextLinkProps) {
   return (
     <a
@@ -21,7 +21,7 @@ export function TextLink({ external = false, arrow, className, children, ...rest
     >
       {children}
       {external && <span className="sr-only"> (opens in a new tab)</span>}
-      <ArrowIcon direction={arrow ?? (external ? 'up-right' : 'right')} className="text-[0.8rem]" />
+      <ArrowIcon direction={arrow ?? (external ? 'up-right' : 'right')} className="text-xs" />
     </a>
   )
 }

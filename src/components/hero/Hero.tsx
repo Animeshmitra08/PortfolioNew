@@ -1,5 +1,10 @@
 import { Suspense, lazy, useEffect, useRef, useState } from 'react'
+import { PROFILE } from '../../data/profile'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { cx } from '../../utils/cx'
+import { Eyebrow } from '../ui/Eyebrow'
+import { TextLink } from '../ui/TextLink'
+import { BODY, CONTAINER } from '../ui/typography'
 import { GlassHeader } from './GlassHeader'
 import { usePointerTracker } from './pointer'
 
@@ -7,8 +12,6 @@ import { usePointerTracker } from './pointer'
 const HeroScene = lazy(() =>
   import('./HeroScene').then((module) => ({ default: module.HeroScene })),
 )
-
-const NAV_LINKS = ['Work', 'Studio', 'Approach', 'Contact']
 
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null)
@@ -31,7 +34,7 @@ export function Hero() {
       ref={heroRef}
       // z-40: the hero is its own stacking context (isolate), so it must sit
       // above later sections for the fixed header inside it to stay on top.
-      className="relative isolate z-40 flex h-svh min-h-[36rem] w-full flex-col overflow-hidden bg-white text-left text-neutral-950"
+      className="relative isolate z-40 flex h-svh min-h-144 w-full flex-col overflow-hidden bg-white text-left text-neutral-950"
     >
       <Suspense fallback={null}>
         <HeroScene
@@ -44,41 +47,33 @@ export function Hero() {
         />
       </Suspense>
 
-      <GlassHeader links={NAV_LINKS} interactive={canHover} reducedMotion={reducedMotion} />
+      <GlassHeader interactive={canHover} reducedMotion={reducedMotion} />
 
       {/* Leaves the visual centre of the hero to the cube. */}
       <div className="flex-1" />
 
-      <div className="grid gap-5 px-6 pb-7 md:grid-cols-12 md:items-end md:gap-8 md:px-10 md:pb-10">
-        <div className="md:col-span-7">
-          <p className="mb-4 flex items-center gap-3 text-[0.7rem] font-medium tracking-[0.22em] text-neutral-400 uppercase">
-            <span aria-hidden className="h-px w-8 bg-neutral-300" />
-            Spatial design studio
-          </p>
-          <h1 className="m-0 text-[clamp(2.4rem,7.2vw,6.75rem)] leading-[0.92] font-semibold tracking-[-0.045em] text-neutral-950">
-            Pure form,
-            <br />
-            in motion.
-          </h1>
-        </div>
+      <div className="px-6 pb-8 md:px-10 md:pb-10">
+        <div className={cx(CONTAINER, 'grid gap-6 md:grid-cols-12 md:items-end md:gap-8')}>
+          <div className="md:col-span-7">
+            <Eyebrow>
+              {PROFILE.fullName}, {PROFILE.role.toLowerCase()}
+            </Eyebrow>
+            <h1 className="m-0 max-w-2xl text-4xl font-semibold tracking-[-0.045em] text-balance text-neutral-950 sm:text-5xl lg:text-7xl">
+              Mobile apps and
+              <br />
+              3D experiences.
+            </h1>
+          </div>
 
-        <div className="max-w-sm md:col-span-4 md:col-start-9 md:justify-self-end">
-          <p className="text-sm leading-relaxed text-neutral-500 md:text-[0.95rem]">
-            We shape digital products and spatial interfaces with restraint, so every line has a
-            purpose and every motion is considered.
-          </p>
-          <a
-            href="#contact"
-            className="group mt-5 inline-flex items-center gap-3 border-b border-neutral-300 pb-1 text-sm font-medium text-neutral-950 transition-colors duration-300 hover:border-neutral-950 focus-visible:border-neutral-950 focus-visible:outline-none"
-          >
-            Start a project
-            <span
-              aria-hidden
-              className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
-            >
-              →
-            </span>
-          </a>
+          <div className="max-w-sm md:col-span-4 md:col-start-9 md:justify-self-end">
+            <p className={BODY}>
+              I build Android and iOS apps with React Native and Expo, interactive 3D with React
+              Three Fiber, and the API integrations that connect them to real systems.
+            </p>
+            <TextLink href="#work" className="mt-6">
+              See selected work
+            </TextLink>
+          </div>
         </div>
       </div>
     </section>

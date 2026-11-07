@@ -9,7 +9,7 @@ interface TechTagProps {
 }
 
 const BASE =
-  'group/tag inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs leading-none font-medium whitespace-nowrap transition-colors duration-300'
+  'group/tag inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs leading-none font-medium whitespace-nowrap transition-colors duration-300'
 
 /** Hairline technology pill; becomes a toggle when `onToggle` is provided. */
 export function TechTag({ label, active = false, onToggle }: TechTagProps) {

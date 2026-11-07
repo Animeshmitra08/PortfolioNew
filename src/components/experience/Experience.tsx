@@ -18,9 +18,10 @@ export function Experience() {
 
   return (
     <Section id="experience" labelledBy="experience-title">
-      <div className="grid gap-14 md:grid-cols-12 md:gap-8">
+      <div className="grid gap-12 md:grid-cols-12 md:gap-8">
         <div className="md:col-span-4">
-          <div className="md:sticky md:top-16">
+          {/* Sticks just below the floating header bar. */}
+          <div className="md:sticky md:top-24">
             <Reveal y={12}>
               <Eyebrow>{EXPERIENCE_SECTION.label}</Eyebrow>
             </Reveal>
@@ -49,7 +50,7 @@ function ExperienceItem({ entry }: { entry: ExperienceEntry }) {
   const current = entry.end.toLowerCase() === 'present'
 
   return (
-    <li className="relative pl-10 md:pl-14">
+    <li className="relative pl-10 md:pl-16">
       <span
         aria-hidden
         className="absolute top-1 left-0 flex size-[15px] items-center justify-center rounded-full border border-neutral-950 bg-white"
@@ -65,16 +66,12 @@ function ExperienceItem({ entry }: { entry: ExperienceEntry }) {
           <span className="font-mono tracking-[0.08em] text-neutral-950">
             {entry.start} — {entry.end}
           </span>
-          {current && (
-            <span className="rounded-full border border-neutral-300 px-2.5 py-1 text-[0.6rem] tracking-[0.18em] text-neutral-950">
-              Current
-            </span>
-          )}
+          {current && <span className="text-neutral-950">Current</span>}
         </p>
-        <h3 className="mt-5 max-w-[22ch] text-[clamp(1.5rem,2.6vw,2.25rem)] leading-[1.06] font-semibold tracking-[-0.03em] text-neutral-950">
+        <h3 className="mt-6 max-w-[22ch] text-2xl font-semibold tracking-[-0.03em] text-balance text-neutral-950 lg:text-3xl xl:text-4xl">
           {entry.role}
         </h3>
-        <p className="mt-3 text-[0.95rem] text-neutral-500">
+        <p className="mt-3 text-base text-neutral-500">
           {entry.company}
           {entry.location && <span className="text-neutral-400"> · {entry.location}</span>}
         </p>
@@ -92,7 +89,7 @@ function ExperienceItem({ entry }: { entry: ExperienceEntry }) {
           <motion.li
             key={item}
             variants={fadeUp}
-            className="group grid grid-cols-[2.25rem_1fr] gap-3 border-b border-neutral-200 py-4 text-[0.95rem] leading-relaxed text-neutral-600 transition-colors duration-300 hover:text-neutral-950"
+            className="group grid grid-cols-[2.25rem_1fr] gap-3 border-b border-neutral-200 py-4 text-base leading-relaxed text-neutral-600 transition-colors duration-300 hover:text-neutral-950"
           >
             <span className="pt-1 font-mono text-xs text-neutral-400 transition-colors duration-300 group-hover:text-neutral-950">
               {String(i + 1).padStart(2, '0')}

@@ -1,33 +1,36 @@
 @import "tailwindcss";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
 
-/* Monochrome light theme: white canvas, black type, grey accents. */
+/*
+ * Design tokens. One sans and one mono family (self-hosted), and the shared
+ * ease-out curve for every transition that doesn't name its own.
+ */
+@theme {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+  --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/*
+ * Monochrome light theme: white canvas, black type, grey accents.
+ * The root keeps the browser's 16px so every Tailwind size and spacing class
+ * renders at its documented value.
+ */
 :root {
-  --text: #6b6b70;
-  --text-h: #0a0a0a;
-  --bg: #fff;
-  --border: #e7e7e9;
-  --code-bg: #f4f4f5;
-  --social-bg: rgba(244, 244, 245, 0.6);
+  /* Used by the SVG project illustrations. */
+  --sans: var(--font-sans);
+  --mono: var(--font-mono);
   --shadow:
-    rgba(0, 0, 0, 0.08) 0 10px 15px -3px, rgba(0, 0, 0, 0.04) 0 4px 6px -2px;
+    rgb(10 10 10 / 0.08) 0 10px 15px -3px, rgb(10 10 10 / 0.04) 0 4px 6px -2px;
 
-  --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
   color-scheme: light;
-  color: var(--text);
-  background: var(--bg);
+  color: var(--color-neutral-500);
+  background: #fff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
 /* In-page navigation glides, unless reduced motion is requested. */
@@ -41,54 +44,4 @@
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-}
-
-/*
- * Element defaults live in the base layer so Tailwind utilities (used by the
- * hero) can override them.
- */
-@layer base {
-  body {
-    margin: 0;
-  }
-
-  h1,
-  h2 {
-    font-family: var(--heading);
-    font-weight: 500;
-    color: var(--text-h);
-  }
-
-  h1 {
-    font-size: 56px;
-    letter-spacing: -1.68px;
-    margin: 32px 0;
-    @media (max-width: 1024px) {
-      font-size: 36px;
-      margin: 20px 0;
-    }
-  }
-  h2 {
-    font-size: 24px;
-    line-height: 118%;
-    letter-spacing: -0.24px;
-    margin: 0 0 8px;
-    @media (max-width: 1024px) {
-      font-size: 20px;
-    }
-  }
-  p {
-    margin: 0;
-  }
-
-  code {
-    font-family: var(--mono);
-    display: inline-flex;
-    border-radius: 4px;
-    color: var(--text-h);
-    font-size: 15px;
-    line-height: 135%;
-    padding: 4px 8px;
-    background: var(--code-bg);
-  }
 }

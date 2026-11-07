@@ -121,7 +121,7 @@ interface IconProps {
 /** Decorative icon; give the surrounding control its accessible name. */
 export function Icon({ name, className }: IconProps) {
   if (name === 'github') {
-    // Same mark as public/icons.svg, recoloured to inherit text colour.
+    // GitHub mark, drawn in currentColor so it inherits the text colour.
     return (
       <svg viewBox="0 0 19 19" fill="currentColor" aria-hidden="true" className={className}>
         <path

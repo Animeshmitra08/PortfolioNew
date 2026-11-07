@@ -20,7 +20,7 @@ export function TechStack() {
       />
 
       <motion.ul
-        className="mt-14 border-t border-neutral-200 md:mt-20"
+        className="mt-16 border-t border-neutral-200 md:mt-20"
         initial="hidden"
         whileInView="visible"
         viewport={IN_VIEW}
@@ -30,21 +30,21 @@ export function TechStack() {
           <motion.li
             key={group.title}
             variants={fadeUp}
-            className="group relative grid gap-5 border-b border-neutral-200 py-8 md:grid-cols-12 md:items-center md:gap-8 md:py-10"
+            className="group relative grid gap-6 border-b border-neutral-200 py-8 md:grid-cols-12 md:items-center md:gap-8 md:py-10"
           >
             <span
               aria-hidden
-              className="absolute inset-x-0 -top-px h-px origin-left scale-x-0 bg-neutral-950 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100 motion-reduce:transition-none"
+              className="absolute inset-x-0 -top-px h-px origin-left scale-x-0 bg-neutral-950 transition-transform duration-500 group-hover:scale-x-100 motion-reduce:transition-none"
             />
 
             <div className="flex items-center gap-4 md:col-span-5 lg:col-span-4">
               <span className="w-6 font-mono text-xs text-neutral-400 transition-colors duration-300 group-hover:text-neutral-950">
                 {String(index + 1).padStart(2, '0')}
               </span>
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-neutral-200 text-neutral-500 transition-colors duration-500 group-hover:border-neutral-950 group-hover:bg-neutral-950 group-hover:text-white">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-neutral-200 text-neutral-500 transition-colors duration-300 group-hover:border-neutral-950 group-hover:bg-neutral-950 group-hover:text-white">
                 <Icon name={group.icon} className="size-5" />
               </span>
-              <h3 className="text-lg leading-tight font-semibold tracking-[-0.02em] text-neutral-950 md:text-xl">
+              <h3 className="text-lg font-semibold tracking-[-0.02em] text-balance text-neutral-950 md:text-xl">
                 {group.title}
               </h3>
             </div>
@@ -59,7 +59,7 @@ export function TechStack() {
                 <li
                   key={item}
                   // Tags ripple slightly, left to right, when the row is hovered.
-                  className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-0.5 motion-reduce:transition-none"
+                  className="transition-transform duration-500 group-hover:-translate-y-0.5 motion-reduce:transition-none"
                   style={{ transitionDelay: `${itemIndex * 30}ms` }}
                 >
                   <TechTag label={item} />
