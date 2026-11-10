@@ -41,8 +41,8 @@ const PILL_HEIGHT = 32
 // lit point and a soft grey falloff on the far side.
 const PILL_SHEEN_STYLE: CSSProperties = {
   background: [
-    'radial-gradient(44px 18px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(255 255 255 / 0.95), rgb(255 255 255 / 0) 70%)',
-    'radial-gradient(150px 56px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(10 10 10 / 0) 25%, rgb(10 10 10 / 0.09) 100%)',
+    'radial-gradient(44px 18px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(255 255 255 / calc(0.95 * var(--glass-glint))), rgb(255 255 255 / 0) 70%)',
+    'radial-gradient(150px 56px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(var(--glass-shade) / 0) 25%, rgb(var(--glass-shade) / 0.09) 100%)',
   ].join(', '),
 }
 

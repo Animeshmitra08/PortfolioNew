@@ -39,11 +39,12 @@ const LENS_MATERIAL: GlassMaterial = {
 }
 
 // Lit point: a bright sheen. Away from it: a faint grey falloff, which is what
-// makes the light direction visible on a white page.
+// makes the light direction visible on a white page. Both are scaled by theme
+// tokens (index.css): on the black page the glint is softer and the falloff off.
 const SHEEN_STYLE: CSSProperties = {
   background: [
-    'radial-gradient(160px 36px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(255 255 255 / 0.3), rgb(255 255 255 / 0) 70%)',
-    'radial-gradient(1400px 220px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(10 10 10 / 0) 20%, rgb(10 10 10 / 0.06) 100%)',
+    'radial-gradient(160px 36px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(255 255 255 / calc(0.3 * var(--glass-glint))), rgb(255 255 255 / 0) 70%)',
+    'radial-gradient(1400px 220px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(var(--glass-shade) / 0) 20%, rgb(var(--glass-shade) / 0.06) 100%)',
   ].join(', '),
 }
 
@@ -58,6 +59,12 @@ interface LiquidGlassBarProps {
    * dark text on it stays legible. Over a white page the lens stays clear.
    */
   frosted?: boolean
+  /**
+   * Blur (px) applied to the backdrop before it is refracted. The default
+   * keeps the lens nearly clear; raise it over fine texture, which a sharp
+   * lens would smear into streaks.
+   */
+  backdropBlur?: number
   className?: string
   children: ReactNode
 }
@@ -74,6 +81,7 @@ export function LiquidGlassBar({
   interactive,
   reducedMotion,
   frosted = false,
+  backdropBlur = 0.25,
   className,
   children,
 }: LiquidGlassBarProps) {
@@ -107,8 +115,8 @@ export function LiquidGlassBar({
 
   const frost: CSSProperties = {
     transition: 'background-color 400ms ease',
-    // Strong enough that the grey secondary links stay readable over black.
-    ...(frosted && { backgroundColor: 'rgb(255 255 255 / 0.8)' }),
+    // Strong enough that the grey secondary links stay readable over imagery.
+    ...(frosted && { backgroundColor: 'var(--glass-frost)' }),
   }
 
   const style: CSSProperties = refracting
@@ -125,7 +133,7 @@ export function LiquidGlassBar({
 
   return (
     <>
-      {refract && <BackdropRefractionFilter filter={lens} width={width} height={height} frost={0.25} />}
+      {refract && <BackdropRefractionFilter filter={lens} width={width} height={height} frost={backdropBlur} />}
       <Glass
         ref={glassRef}
         material="clear"

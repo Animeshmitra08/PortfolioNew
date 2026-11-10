@@ -9,15 +9,17 @@ import { createStudioScene } from './studioEnvironment'
 
 /**
  * Studio reflections generated locally (no HDR download), which keeps the
- * metal strictly monochrome.
+ * metal strictly monochrome. The room is brighter in the dark theme so every
+ * face of the turning cube reads as steel against the graphite hero instead
+ * of sinking into it.
  */
-function StudioEnvironment() {
+function StudioEnvironment({ dark }: { dark: boolean }) {
   const get = useThree((state) => state.get)
 
   useEffect(() => {
     const { gl, scene } = get()
     const pmrem = new PMREMGenerator(gl)
-    const studio = createStudioScene()
+    const studio = createStudioScene(dark ? 0.2 : 0.035)
     const envMap = pmrem.fromScene(studio.scene, 0.02).texture
     scene.environment = envMap
     studio.dispose()
@@ -26,7 +28,7 @@ function StudioEnvironment() {
       if (scene.environment === envMap) scene.environment = null
       envMap.dispose()
     }
-  }, [get])
+  }, [get, dark])
 
   return null
 }
@@ -116,6 +118,8 @@ interface HeroSceneProps {
   reducedMotion: boolean
   /** Lower pixel-ratio ceiling for touch / small devices. */
   lowPower: boolean
+  /** Dark theme: lighter mesh and a brighter studio, for a black page. */
+  dark: boolean
   className?: string
 }
 
@@ -125,6 +129,7 @@ export function HeroScene({
   interactive,
   reducedMotion,
   lowPower,
+  dark,
   className,
 }: HeroSceneProps) {
   return (
@@ -140,12 +145,12 @@ export function HeroScene({
     >
       <PointerDriver pointerRef={pointerRef} ghost={!interactive && !reducedMotion} />
       <CameraRig pointerRef={pointerRef} reducedMotion={reducedMotion} />
-      <StudioEnvironment />
+      <StudioEnvironment dark={dark} />
 
       <directionalLight position={[4, 6, 5]} intensity={1.6} />
       <directionalLight position={[-5, -2, 3]} intensity={0.35} />
 
-      <NetMesh pointerRef={pointerRef} reducedMotion={reducedMotion} />
+      <NetMesh pointerRef={pointerRef} reducedMotion={reducedMotion} dark={dark} />
       <Suspense fallback={null}>
         <MetalCube pointerRef={pointerRef} reducedMotion={reducedMotion} />
       </Suspense>

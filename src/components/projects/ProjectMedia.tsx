@@ -81,7 +81,7 @@ export function ProjectMedia({ project, href, className }: ProjectMediaProps) {
       </motion.div>
 
       {/* Flat, soft shade on hover. */}
-      <span className="pointer-events-none absolute inset-0 bg-neutral-950/10 opacity-0 transition-opacity duration-300 group-hover/media:opacity-100" />
+      <span className="pointer-events-none absolute inset-0 bg-fixed-black/10 opacity-0 transition-opacity duration-300 group-hover/media:opacity-100" />
 
       {canHover ? (
         <motion.span
@@ -98,7 +98,7 @@ export function ProjectMedia({ project, href, className }: ProjectMediaProps) {
               as="span"
               followLight={false}
               className="flex size-24 items-center justify-center gap-2 text-sm font-medium text-neutral-950"
-              style={{ background: 'rgb(255 255 255 / 0.55)' }}
+              style={{ background: 'var(--glass-lens)' }}
             >
               <span className="relative">View</span>
               <ArrowIcon direction="up-right" className="relative text-xs" />
@@ -110,7 +110,7 @@ export function ProjectMedia({ project, href, className }: ProjectMediaProps) {
           className={cx(
             'absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-medium backdrop-blur-md',
             dark
-              ? 'border-white/25 bg-white/10 text-white'
+              ? 'border-fixed-white/25 bg-fixed-white/10 text-fixed-white'
               : 'border-neutral-950/10 bg-white/70 text-neutral-950',
           )}
         >

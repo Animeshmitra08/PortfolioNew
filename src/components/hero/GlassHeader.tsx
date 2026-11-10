@@ -4,6 +4,8 @@ import { PRIMARY_NAV, SECTION_IDS } from '../../data/navigation'
 import { PROFILE } from '../../data/profile'
 import { useActiveSection } from '../../hooks/useActiveSection'
 import { useScrolledPast } from '../../hooks/useScrolledPast'
+import { useTheme } from '../../hooks/useTheme'
+import { ThemeToggle } from '../ui/ThemeToggle'
 import { CONTAINER } from '../ui/typography'
 import { GlassNavLinks } from './GlassNavLinks'
 import { LiquidGlassBar } from './LiquidGlassBar'
@@ -16,9 +18,10 @@ interface GlassHeaderProps {
 }
 
 export function GlassHeader(props: GlassHeaderProps) {
+  const theme = useTheme()
   return (
     <GlassProvider>
-      <GlassThemeProvider appearance="light" defaultAppearance="light" className="contents">
+      <GlassThemeProvider appearance={theme} defaultAppearance="dark" className="contents">
         <GlassBar {...props} />
       </GlassThemeProvider>
     </GlassProvider>
@@ -26,9 +29,12 @@ export function GlassHeader(props: GlassHeaderProps) {
 }
 
 function GlassBar({ interactive, reducedMotion }: GlassHeaderProps) {
-  // Over the white hero the lens stays clear. Past it, the bar floats over
+  // Over the plain hero the lens stays clear. Past it, the bar floats over
   // any content (including dark imagery), so it frosts to keep text legible.
   const pastHero = useScrolledPast(0.75)
+  // While the bar is over the speckled hero, the lens blurs what it bends so
+  // the flecks read as soft mottling through frosted glass, not streaks.
+  const overHero = !useScrolledPast(1)
   const activeId = useActiveSection(SECTION_IDS)
   const activeHref = activeId ? `#${activeId}` : null
 
@@ -41,6 +47,7 @@ function GlassBar({ interactive, reducedMotion }: GlassHeaderProps) {
         interactive={interactive}
         reducedMotion={reducedMotion}
         frosted={pastHero}
+        backdropBlur={overHero ? 4 : 0.25}
         className={`pointer-events-auto flex items-center justify-between px-6 py-3 md:px-8 md:py-4 ${CONTAINER}`}
       >
         <a
@@ -54,7 +61,10 @@ function GlassBar({ interactive, reducedMotion }: GlassHeaderProps) {
           <nav aria-label="Primary">
             <GlassNavLinks links={PRIMARY_NAV} activeHref={activeHref} interactive={interactive} />
           </nav>
-          <MobileMenu activeHref={activeHref} reducedMotion={reducedMotion} />
+          <div className="flex items-center gap-2">
+            <ThemeToggle className="-my-2 md:-mr-2" />
+            <MobileMenu activeHref={activeHref} reducedMotion={reducedMotion} />
+          </div>
         </div>
       </LiquidGlassBar>
     </header>

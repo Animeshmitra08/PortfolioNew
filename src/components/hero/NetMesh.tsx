@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, type RefObject } from 'react'
+import { useEffect, useMemo, useRef, useState, type RefObject } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import {
   BufferGeometry,
@@ -202,6 +202,12 @@ function createUniforms(color: string, opacity: number, idle: number) {
   }
 }
 
+// Grey on the white page, light on the black one.
+const NET_COLORS = {
+  light: { points: '#4a4a50', lines: '#7c7c83' },
+  dark: { points: '#d4d4d4', lines: '#a1a1a1' },
+}
+
 // Scratch objects for projecting the pointer onto the mesh plane.
 const raycaster = new Raycaster()
 const ndc = new Vector2()
@@ -211,9 +217,10 @@ const meshPlane = new Plane(new Vector3(0, 0, 1), -NET_PLANE_Z)
 interface NetMeshProps {
   pointerRef: RefObject<PointerState>
   reducedMotion: boolean
+  dark: boolean
 }
 
-export function NetMesh({ pointerRef, reducedMotion }: NetMeshProps) {
+export function NetMesh({ pointerRef, reducedMotion, dark }: NetMeshProps) {
   const size = useThree((state) => state.size)
   const viewport = useThree((state) => state.viewport)
 
@@ -241,8 +248,9 @@ export function NetMesh({ pointerRef, reducedMotion }: NetMeshProps) {
   )
 
   // color, peak opacity, idle opacity (a faint resting net, fully revealed near the cursor)
-  const pointUniforms = useMemo(() => createUniforms('#4a4a50', 0.95, 0.14), [])
-  const lineUniforms = useMemo(() => createUniforms('#7c7c83', 0.8, 0.09), [])
+  const colors = dark ? NET_COLORS.dark : NET_COLORS.light
+  const [pointUniforms] = useState(() => createUniforms(colors.points, 0.95, 0.14))
+  const [lineUniforms] = useState(() => createUniforms(colors.lines, 0.8, 0.09))
 
   // Cube silhouette radius projected onto the mesh plane.
   const clearRadius =
@@ -251,6 +259,12 @@ export function NetMesh({ pointerRef, reducedMotion }: NetMeshProps) {
   const groupRef = useRef<Group>(null)
   const pointsMaterialRef = useRef<ShaderMaterial>(null)
   const linesMaterialRef = useRef<ShaderMaterial>(null)
+
+  // Recolour in place when the theme changes; the uniforms object is kept.
+  useEffect(() => {
+    pointsMaterialRef.current?.uniforms.uColor.value.set(colors.points)
+    linesMaterialRef.current?.uniforms.uColor.value.set(colors.lines)
+  }, [colors])
 
   useFrame((state, rawDelta) => {
     const pointsMaterial = pointsMaterialRef.current

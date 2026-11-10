@@ -2,6 +2,9 @@
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
 
+/* `dark:` follows the site's own toggle (data-theme on <html>), not the OS. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
 /*
  * Design tokens. One sans and one mono family (self-hosted), and the shared
  * ease-out curve for every transition that doesn't name its own.
@@ -10,6 +13,13 @@
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
   --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /*
+   * Never remapped by the theme: for content that sits on artwork whose tone
+   * is the same in both themes.
+   */
+  --color-fixed-white: #fff;
+  --color-fixed-black: #0a0a0a;
 }
 
 /*
@@ -24,19 +34,179 @@
   --shadow:
     rgb(10 10 10 / 0.08) 0 10px 15px -3px, rgb(10 10 10 / 0.04) 0 4px 6px -2px;
 
+  /* Glass: edge hairline, counter-reflection, sheen and frost. */
+  --glass-edge: rgb(10 10 10 / 0.2);
+  --glass-spec-counter: rgb(255 255 255 / 0.3);
+  --glass-glint: 1;
+  --glass-shade: 10 10 10;
+  --glass-frost: rgb(255 255 255 / 0.8);
+  --glass-lens: rgb(255 255 255 / 0.55);
+
   color-scheme: light;
   color: var(--color-neutral-500);
-  background: #fff;
+  background: var(--color-white);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/*
+ * Dark theme (the default; see the inline script in index.html). The site is
+ * monochrome, so the neutral scale is simply turned over: `white` becomes the
+ * black canvas, `neutral-950` the near-white ink, and the steps between swap
+ * ends. Every `bg-white`, `text-neutral-500`, `border-neutral-200`… then
+ * follows the theme with no per-component overrides.
+ */
+:root[data-theme='dark'] {
+  --color-white: #000000;
+  --color-neutral-50: #181818;
+  --color-neutral-100: #181818;
+  --color-neutral-200: #272727;
+  --color-neutral-300: #313131;
+  --color-neutral-400: oklch(55.6% 0 0);
+  --color-neutral-500: oklch(70.8% 0 0);
+  --color-neutral-600: oklch(87% 0 0);
+  --color-neutral-700: oklch(92.2% 0 0);
+  --color-neutral-800: oklch(97% 0 0);
+  --color-neutral-900: oklch(97% 0 0);
+  --color-neutral-950: oklch(98.5% 0 0);
+
+  --shadow:
+    rgb(255 255 255 / 0.14) 0 10px 24px -6px, rgb(255 255 255 / 0.08) 0 4px 8px -2px;
+
+  --glass-edge: rgb(255 255 255 / 0.18);
+  --glass-spec-counter: rgb(255 255 255 / 0.1);
+  --glass-glint: 0.35;
+  --glass-shade: 0 0 0;
+  --glass-frost: rgb(0 0 0 / 0.7);
+  --glass-lens: rgb(0 0 0 / 0.5);
+
+  color-scheme: dark;
+}
+
 /* In-page navigation glides, unless reduced motion is requested. */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
+  }
+}
+
+/*
+ * The hero's surface: speckled graphite in the dark theme, and the same
+ * flecks turned over on white (speckled paper) in the light theme. The base
+ * colour is flat; the flecks come from a small repeating SVG noise tile.
+ */
+@layer components {
+  .speckled-surface {
+    --hero-base: #fff;
+    --hero-glow: transparent;
+    background-color: var(--hero-base);
+    background-image: url('./assets/textures/speckle-paper.svg');
+    background-size: 512px 512px;
+  }
+
+  [data-theme='dark'] .speckled-surface {
+    --hero-base: #1f1f1f;
+    --hero-glow: rgb(255 255 255 / 0.07);
+    background-image: url('./assets/textures/speckle-graphite.svg');
+  }
+
+  /*
+   * The hero's travelling light. The flecks above never move: this layer
+   * covers them in the flat base colour, except for a soft-edged opening that
+   * crosses the hero from the top-left corner to the bottom-right. The opening
+   * is clearest just behind its leading edge and fades out along a long trail,
+   * so the speckles appear in the light and sink back as it passes.
+   *
+   * Only `transform` animates, so nothing repaints. With reduced motion the
+   * layer is removed and the whole surface stays speckled.
+   */
+  .hero-light {
+    position: absolute;
+    inset: 0;
+    z-index: -20;
+    overflow: hidden;
+    pointer-events: none;
+    /* Lets the pieces below size themselves from the hero (cqw / cqh). */
+    container-type: size;
+  }
+
+  /* A point at the hero's centre, turned so its x axis runs along the diagonal. */
+  .hero-light__axis {
+    /* Long enough to span the hero at any angle (refined below). */
+    --reach: calc(100cqw + 100cqh);
+    /* Length of the opening, trail included. */
+    --trail: calc(var(--reach) * 0.6);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    rotate: 30deg;
+    /* The hero's true diagonal, where trig functions are supported. */
+    rotate: atan2(100cqh, 100cqw);
+  }
+
+  /*
+   * Along the diagonal: [cover][opening][cover]. Each cover alone hides the
+   * whole hero, so the strip can slide from "opening not yet arrived" to
+   * "opening gone" without ever exposing an edge.
+   */
+  .hero-light__sweep {
+    position: absolute;
+    top: calc(var(--reach) / -2);
+    left: 0;
+    width: calc(var(--reach) * 2 + var(--trail));
+    height: var(--reach);
+    background:
+      /* A faint glow, strongest just behind the leading edge. */
+      linear-gradient(
+        to right,
+        transparent var(--reach),
+        var(--hero-glow) calc(var(--reach) + var(--trail) * 0.9),
+        transparent calc(var(--reach) + var(--trail))
+      ),
+      /* The cover: solid, thinning along the trail, clear at the front. */
+      linear-gradient(
+        to right,
+        var(--hero-base) var(--reach),
+        color-mix(in srgb, var(--hero-base) 80%, transparent) calc(var(--reach) + var(--trail) * 0.35),
+        color-mix(in srgb, var(--hero-base) 45%, transparent) calc(var(--reach) + var(--trail) * 0.65),
+        transparent calc(var(--reach) + var(--trail) * 0.9),
+        var(--hero-base) calc(var(--reach) + var(--trail))
+      );
+    /* One pass, then a pause before the next. Constant speed, like a real light. */
+    animation: hero-light-sweep 10s linear infinite;
+  }
+
+  .hero-light[data-paused='true'] .hero-light__sweep {
+    animation-play-state: paused;
+  }
+
+  /* The exact diagonal where supported, so the light wastes no time off screen. */
+  @supports (width: hypot(1px, 1px)) {
+    .hero-light__axis {
+      --reach: hypot(100cqw, 100cqh);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-light {
+      display: none;
+    }
+  }
+}
+
+@keyframes hero-light-sweep {
+  /* Leading edge just outside the top-left corner. */
+  from {
+    transform: translateX(calc(var(--reach) * -1.5 - var(--trail)));
+  }
+  /* End of the trail just outside the bottom-right corner; then hold. */
+  80%,
+  to {
+    transform: translateX(calc(var(--reach) * -0.5));
   }
 }
 

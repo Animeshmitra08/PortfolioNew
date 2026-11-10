@@ -1,7 +1,10 @@
 import type { ArtworkKind } from './types'
 
 interface ArtworkMeta {
-  /** Background tone, so overlays can pick a legible colour. */
+  /**
+   * Background tone, so overlays can pick a legible colour. Light artwork is
+   * inverted in the dark theme (see ProjectArtwork); dark artwork never changes.
+   */
   tone: 'dark' | 'light'
   /** 16:10 detail crops shown in the case-study gallery until screenshots exist. */
   crops: [string, string]

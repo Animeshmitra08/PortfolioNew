@@ -10,6 +10,7 @@ import { Icon } from '../ui/Icon'
 import { EASE_OUT, IN_VIEW, fadeUp, stagger } from '../ui/motion'
 import { TechTag } from '../ui/TechTag'
 import { TextLink } from '../ui/TextLink'
+import { ThemeToggle } from '../ui/ThemeToggle'
 import { BODY, CONTAINER, FOCUS_RING, LABEL } from '../ui/typography'
 import { ARTWORK_META } from './artwork/meta'
 import { ProjectArtwork } from './artwork/ProjectArtwork'
@@ -73,17 +74,20 @@ export function ProjectCaseStudy({ project, index, next, onClose, onNavigate }: 
             <span className="mr-2 font-mono text-neutral-400">{number}</span>
             {project.name}
           </p>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close case study"
-            className={cx(
-              'relative inline-flex size-9 cursor-pointer items-center justify-center rounded-full text-neutral-950 transition-colors duration-300 hover:bg-neutral-950 hover:text-white',
-              FOCUS_RING,
-            )}
-          >
-            <Icon name="close" className="size-4" />
-          </button>
+          <div className="relative flex items-center gap-2">
+            <ThemeToggle />
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close case study"
+              className={cx(
+                'relative inline-flex size-9 cursor-pointer items-center justify-center rounded-full text-neutral-950 transition-colors duration-300 hover:bg-neutral-950 hover:text-white',
+                FOCUS_RING,
+              )}
+            >
+              <Icon name="close" className="size-4" />
+            </button>
+          </div>
         </LiquidGlassBar>
       </nav>
 

@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { useTheme } from '../../hooks/useTheme'
 import { mulberry32 } from '../../utils/random'
 
-// Hero palette: ink, net nodes (#4a4a50) and net lines (#7c7c83).
-const INK = '10, 10, 10'
-const NODE = '74, 74, 80'
-const LINE = '124, 124, 131'
+// The hero's palette per theme: ink, net nodes, net lines and the page colour.
+const PALETTES = {
+  light: { ink: '10, 10, 10', node: '74, 74, 80', line: '124, 124, 131', paper: '#fff' },
+  dark: { ink: '250, 250, 250', node: '212, 212, 212', line: '161, 161, 161', paper: '#000' },
+}
 
 const SPACING = 30
 const BASE_TILT = 0.36
@@ -119,6 +121,7 @@ export function SystemVisual({ activeIndex, labels }: SystemVisualProps) {
 
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   const canHover = useMediaQuery('(hover: hover) and (pointer: fine)')
+  const theme = useTheme()
 
   useEffect(() => {
     activeRef.current = activeIndex
@@ -131,6 +134,7 @@ export function SystemVisual({ activeIndex, labels }: SystemVisualProps) {
     const context = canvas?.getContext('2d')
     if (!frame || !canvas || !context) return
     const ctx = context
+    const { ink: INK, node: NODE, line: LINE, paper: PAPER } = PALETTES[theme]
 
     let width = 0
     let height = 0
@@ -286,7 +290,7 @@ export function SystemVisual({ activeIndex, labels }: SystemVisualProps) {
         }
         ctx.beginPath()
         ctx.arc(node.x, node.y, 3 + 2 * e, 0, Math.PI * 2)
-        ctx.fillStyle = e > 0.5 ? `rgb(${INK})` : '#fff'
+        ctx.fillStyle = e > 0.5 ? `rgb(${INK})` : PAPER
         ctx.fill()
         ctx.lineWidth = 1.25
         ctx.strokeStyle = `rgba(${INK}, ${(0.45 + 0.55 * e) * depth})`
@@ -335,7 +339,7 @@ export function SystemVisual({ activeIndex, labels }: SystemVisualProps) {
         const t = (corner.z + SQRT3) / (2 * SQRT3)
         ctx.beginPath()
         ctx.arc(corner.x, corner.y, 2.4, 0, Math.PI * 2)
-        ctx.fillStyle = '#fff'
+        ctx.fillStyle = PAPER
         ctx.fill()
         ctx.strokeStyle = `rgba(${INK}, ${0.25 + 0.7 * t})`
         ctx.stroke()
@@ -419,7 +423,7 @@ export function SystemVisual({ activeIndex, labels }: SystemVisualProps) {
       frame.removeEventListener('pointermove', handleMove)
       frame.removeEventListener('pointerleave', handleLeave)
     }
-  }, [reducedMotion, canHover, labels])
+  }, [reducedMotion, canHover, labels, theme])
 
   return (
     <div ref={frameRef} className="relative aspect-square w-full border border-neutral-200 bg-white">

@@ -30,12 +30,17 @@ const PANELS: Panel[] = [
   { size: [3, 3], position: [-3, -1, -6], intensity: 0.9 }, // soft back bounce
 ]
 
-export function createStudioScene() {
+/**
+ * @param roomLevel Brightness of the room walls. Near black gives graphite
+ *   faces (for a white page); a mid grey gives steel that holds its silhouette
+ *   against a black page.
+ */
+export function createStudioScene(roomLevel = 0.035) {
   const scene = new Scene()
   const geometries = [new BoxGeometry(16, 16, 16), new PlaneGeometry(1, 1)]
   const materials: Material[] = []
 
-  const roomMaterial = new MeshBasicMaterial({ color: new Color(0.035, 0.035, 0.038), side: BackSide })
+  const roomMaterial = new MeshBasicMaterial({ color: new Color(roomLevel, roomLevel, roomLevel * 1.08), side: BackSide })
   materials.push(roomMaterial)
   scene.add(new Mesh(geometries[0], roomMaterial))
 

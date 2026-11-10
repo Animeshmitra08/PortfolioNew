@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { PROFILE } from '../../data/profile'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { useTheme } from '../../hooks/useTheme'
 import { cx } from '../../utils/cx'
 import { Eyebrow } from '../ui/Eyebrow'
 import { TextLink } from '../ui/TextLink'
@@ -18,6 +19,7 @@ export function Hero() {
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   const canHover = useMediaQuery('(hover: hover) and (pointer: fine)')
   const pointer = usePointerTracker(heroRef, canHover)
+  const dark = useTheme() === 'dark'
 
   // Stop rendering the scene while the hero is scrolled out of view.
   const [inView, setInView] = useState(true)
@@ -32,10 +34,18 @@ export function Hero() {
   return (
     <section
       ref={heroRef}
+      // speckled-surface: graphite with flecks (dark) or speckled paper (light).
       // z-40: the hero is its own stacking context (isolate), so it must sit
       // above later sections for the fixed header inside it to stay on top.
-      className="relative isolate z-40 flex h-svh min-h-144 w-full flex-col overflow-hidden bg-white text-left text-neutral-950"
+      className="relative isolate z-40 flex h-svh min-h-144 w-full flex-col overflow-hidden text-left text-neutral-950 speckled-surface"
     >
+      {/* A light crossing the hero diagonally: the flecks show only in its trail (see index.css). */}
+      <div aria-hidden className="hero-light" data-paused={!inView}>
+        <div className="hero-light__axis">
+          <div className="hero-light__sweep" />
+        </div>
+      </div>
+
       <Suspense fallback={null}>
         <HeroScene
           className="-z-10"
@@ -44,6 +54,7 @@ export function Hero() {
           interactive={canHover}
           reducedMotion={reducedMotion}
           lowPower={!canHover}
+          dark={dark}
         />
       </Suspense>
 
@@ -55,7 +66,7 @@ export function Hero() {
       <div className="px-6 pb-8 md:px-10 md:pb-10">
         <div className={cx(CONTAINER, 'grid gap-6 md:grid-cols-12 md:items-end md:gap-8')}>
           <div className="md:col-span-7">
-            <Eyebrow>
+            <Eyebrow strong>
               {PROFILE.fullName}, {PROFILE.role.toLowerCase()}
             </Eyebrow>
             <h1 className="m-0 max-w-2xl text-4xl font-semibold tracking-[-0.045em] text-balance text-neutral-950 sm:text-5xl lg:text-7xl">

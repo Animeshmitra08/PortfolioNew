@@ -18,8 +18,8 @@ const SURFACE_LOOK: GlassLook = {
 // Same sheen as the header: a glint at the lit point, grey falloff opposite.
 const SHEEN_STYLE: CSSProperties = {
   background: [
-    'radial-gradient(120px 40px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(255 255 255 / 0.6), rgb(255 255 255 / 0) 70%)',
-    'radial-gradient(900px 160px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(10 10 10 / 0) 25%, rgb(10 10 10 / 0.06) 100%)',
+    'radial-gradient(120px 40px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(255 255 255 / calc(0.6 * var(--glass-glint))), rgb(255 255 255 / 0) 70%)',
+    'radial-gradient(900px 160px at var(--glass-light-x, 30%) var(--glass-light-y, 0%), rgb(var(--glass-shade) / 0) 25%, rgb(var(--glass-shade) / 0.06) 100%)',
   ].join(', '),
 }
 
