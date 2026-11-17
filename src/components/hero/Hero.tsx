@@ -9,6 +9,7 @@ import { TextLink } from '../ui/TextLink'
 import { EASE_IN_OUT, EASE_SOFT } from '../ui/motion'
 import { BODY, CONTAINER } from '../ui/typography'
 import { GlassHeader } from './GlassHeader'
+import { HeroWordmark } from './HeroWordmark'
 import { usePointerTracker } from './pointer'
 
 // three.js is loaded in its own chunk so the hero copy paints immediately.
@@ -94,6 +95,17 @@ export function Hero({ revealed = true }: HeroProps) {
           <div className="hero-light__sweep" />
         </div>
       </div>
+
+      {/* Liquid-glass lettering: above the light sweep (-z-20), behind the cube (-z-10). */}
+      <HeroWordmark
+        text={`I’m ${PROFILE.name}`}
+        className="-z-15"
+        initial={entrance.initial}
+        animate={entrance.animate}
+        pointerRef={pointer}
+        interactive={canHover && !reducedMotion}
+        active={inView}
+      />
 
       <Suspense fallback={null}>
         <HeroScene
