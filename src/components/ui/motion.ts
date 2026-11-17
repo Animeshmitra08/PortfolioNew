@@ -3,6 +3,12 @@ import type { Variants } from 'motion/react'
 /** Calm ease-out shared by every reveal: quick start, long soft landing. */
 export const EASE_OUT = [0.22, 1, 0.36, 1] as const
 
+/** Ease-in-out (cubic): gentle start, gentle landing. For anything that travels. */
+export const EASE_IN_OUT = [0.65, 0, 0.35, 1] as const
+
+/** Soft ease-in-out for fades and blurs: eases in briefly, lands slowly, never pops. */
+export const EASE_SOFT = [0.4, 0, 0.2, 1] as const
+
 /** Reveal once, shortly after an element's top edge enters the viewport. */
 export const IN_VIEW = { once: true, margin: '0px 0px -12% 0px' } as const
 

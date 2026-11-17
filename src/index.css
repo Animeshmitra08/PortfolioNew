@@ -1,15 +1,21 @@
 @import "tailwindcss";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
+@import "@fontsource/exile";
 
 /* `dark:` follows the site's own toggle (data-theme on <html>), not the OS. */
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
 /*
- * Design tokens. One sans and one mono family (self-hosted), and the shared
- * ease-out curve for every transition that doesn't name its own.
+ * Design tokens. Three self-hosted families with distinct jobs:
+ *   display (Exile)      opening name, hero and section headlines, big numerals
+ *   sans    (Geist)      body copy, UI and small headings
+ *   mono    (Geist Mono) labels, indices, counters and other metadata
+ * plus the shared ease-out curve for every transition that doesn't name its own.
+ * Exile has a single weight (400): use it with `font-normal`, large sizes only.
  */
 @theme {
+  --font-display: 'Exile', 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
   --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
@@ -31,6 +37,7 @@
   /* Used by the SVG project illustrations. */
   --sans: var(--font-sans);
   --mono: var(--font-mono);
+  --display: var(--font-display);
   --shadow:
     rgb(10 10 10 / 0.08) 0 10px 15px -3px, rgb(10 10 10 / 0.04) 0 4px 6px -2px;
 

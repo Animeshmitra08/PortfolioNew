@@ -106,7 +106,7 @@ export function ProjectCaseStudy({ project, index, next, onClose, onNavigate }: 
               </Eyebrow>
               <h2
                 id={CASE_STUDY_TITLE_ID}
-                className="m-0 text-4xl font-semibold tracking-[-0.045em] text-balance text-neutral-950 sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
+                className="m-0 text-4xl font-display font-normal tracking-normal text-balance text-neutral-950 sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
               >
                 {project.name}
               </h2>
@@ -214,7 +214,7 @@ export function ProjectCaseStudy({ project, index, next, onClose, onNavigate }: 
             >
               <span className={cx('text-neutral-400 md:col-span-3', LABEL)}>Next project</span>
               <span className="flex items-center justify-between gap-6 md:col-span-9">
-                <span className="text-4xl font-semibold tracking-[-0.045em] text-balance text-neutral-950 transition-transform duration-500 group-hover:translate-x-2 group-focus-visible:underline group-focus-visible:decoration-2 group-focus-visible:underline-offset-8 md:text-6xl lg:text-7xl">
+                <span className="text-4xl font-display font-normal tracking-normal text-balance text-neutral-950 transition-transform duration-500 group-hover:translate-x-2 group-focus-visible:underline group-focus-visible:decoration-2 group-focus-visible:underline-offset-8 md:text-6xl lg:text-7xl">
                   {next.name}
                 </span>
                 <span className="flex size-12 shrink-0 items-center justify-center rounded-full border border-neutral-200 text-neutral-950 transition-colors duration-300 group-hover:border-neutral-950 group-hover:bg-neutral-950 group-hover:text-white md:size-16">

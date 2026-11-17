@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { MotionConfig } from 'motion/react'
+import { Opening } from './components/Loading/Opening'
 import { About } from './components/about/About'
 import { Approach } from './components/approach/Approach'
 import { Contact } from './components/contact/Contact'
@@ -11,8 +13,16 @@ import { TechStack } from './components/stack/TechStack'
 import { GlassScope } from './components/ui/GlassScope'
 
 function App() {
+  // The opening screen covers the first paint, then removes itself once its panels have parted.
+  const [showOpening, setShowOpening] = useState(true)
+  // Flips as the panels start to part, so the hero's entrance overlaps the exit.
+  const [heroRevealed, setHeroRevealed] = useState(false)
+
   return (
     <>
+      {showOpening && (
+        <Opening onOpening={() => setHeroRevealed(true)} onOpened={() => setShowOpening(false)} />
+      )}
       {/* First stop for keyboard users: jumps past the hero and header. */}
       <a
         href="#main"
@@ -21,7 +31,7 @@ function App() {
         Skip to content
       </a>
       {/* The hero lazy-loads its own three.js scene, so its copy paints immediately. */}
-      <Hero />
+      <Hero revealed={heroRevealed} />
       {/* "user": transform animations are skipped when reduced motion is requested. */}
       <MotionConfig reducedMotion="user">
         <GlassScope>

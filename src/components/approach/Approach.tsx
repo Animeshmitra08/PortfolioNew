@@ -79,7 +79,7 @@ export function Approach() {
               <span
                 aria-hidden
                 className={cx(
-                  'block text-5xl font-semibold tracking-[-0.05em] transition-colors duration-300 lg:text-7xl',
+                  'block text-5xl font-display font-normal tracking-normal transition-colors duration-300 lg:text-7xl',
                   lit ? 'text-neutral-950' : 'text-neutral-200',
                 )}
               >
